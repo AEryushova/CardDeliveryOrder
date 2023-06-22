@@ -3,6 +3,11 @@ package ru.netology;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
@@ -18,10 +23,24 @@ public class CardDeliveryTest {
             return LocalDate.now().plusDays(day).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         }
 
+    @BeforeAll
+    static void setUpAllAllure(){
+        SelenideLogger.addListener("allure",new AllureSelenide());
+    }
+    @AfterAll
+    static void tearDownAll(){
+        SelenideLogger.removeListener("allure");
+    }
+
+
+    @BeforeEach
+    void setUpAll() {
+        Configuration.holdBrowserOpen = true;
+        open("http://localhost:9999/");
+    }
+
         @Test
         void shouldBookCardWithDeliveryHappyPath() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -35,8 +54,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardWithDeliveryDoubleNameHappyPath() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -51,8 +68,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardWithDeliveryPhoneHappyPath() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -67,8 +82,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoCityDeliveryV1() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Тольятти");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -82,8 +95,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoCityDeliveryV2() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Samara");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -97,8 +108,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoCityDeliveryV3() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("1234");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -112,8 +121,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoCityDeliveryV4() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("!!$");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -127,8 +134,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardDeliveryWithoutCity() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
             form.$("[data-test-id='date'] input").setValue(meetingDay(3));
@@ -141,8 +146,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoDateDeliveryV1() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -156,8 +159,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoDateDeliveryV2() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -171,8 +172,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoDateDeliveryV3() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -186,8 +185,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardWithoutDateDelivery() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -200,8 +197,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoNameV1() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -215,8 +210,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoNameV2() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -230,8 +223,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoNameV3() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -245,8 +236,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardWithoutName() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -259,8 +248,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoPhoneV1() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -274,8 +261,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoPhoneV2() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -289,8 +274,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoPhoneV3() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -304,8 +287,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoPhoneV4() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -319,8 +300,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardNoPhoneV5() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -334,8 +313,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardWithoutPhone() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -348,8 +325,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldBookCardWithoutAgreement() {
-            Configuration.holdBrowserOpen = true;
-            open("http://localhost:9999/");
             SelenideElement form = $("[action='/']");
             form.$("[data-test-id='city'] input").setValue("Самара");
             form.$("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
@@ -361,8 +336,6 @@ public class CardDeliveryTest {
         }
     @Test
     void shouldBookCardWithDropdown() {
-        Configuration.holdBrowserOpen = true;
-        open("http://localhost:9999/");
         SelenideElement form = $("[action='/']");
         form.$("[data-test-id='city'] input").setValue("Ка");
         $x("//span[text()='Казань']//parent::div//parent::div[@tabindex='0'] //span[text()='Казань']").click();
@@ -376,8 +349,6 @@ public class CardDeliveryTest {
     }
     @Test
     void shouldBookCardWithDropdownV2() {
-        Configuration.holdBrowserOpen = true;
-        open("http://localhost:9999/");
         SelenideElement form = $("[action='/']");
         form.$("[data-test-id='city'] input").setValue("Вл");
         $x("//span[text()='Владимир']//parent::div//parent::div[@tabindex='0'] //span[text()='Владимир']").click();
